@@ -2,7 +2,7 @@ name: Download all tags from GitHub artifacts and create multi-platform manifest
 
 env:
   OWNER: ${{ github.repository_owner }}
-  PUSH_TO_REGISTRY: ${{ (github.repository_owner == 'jupyter' || github.repository_owner == 'mathbunnyru') && (github.ref == 'refs/heads/main' || github.event_name == 'schedule') }}
+  PUSH_TO_REGISTRY: ${{ (github.repository_owner == 'jupyter' || github.repository_owner == 'mathbunnyru' || vars.PUSH_TO_REGISTRY == 'true') && (github.ref == 'refs/heads/main' || github.event_name == 'schedule') }}
 
 on:
   workflow_call:
@@ -51,7 +51,7 @@ jobs:
         if: env.PUSH_TO_REGISTRY == 'true'
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
         with:
-          registry: quay.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_TOKEN }}
 
