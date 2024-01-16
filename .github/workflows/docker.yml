@@ -33,7 +33,7 @@ on:
       - "requirements-dev.txt"
   push:
     branches:
-      - main
+      - feature/add_ghcr_registry
     paths:
       - ".github/workflows/docker.yml"
       - ".github/workflows/docker-build-test-upload.yml"
@@ -282,8 +282,8 @@ jobs:
       platform: aarch64
       image: ${{ matrix.image }}
     secrets:
-      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
-      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME || secrets.REGISTRY_USERNAME }}
+      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN || secrets.REGISTRY_ROBOT_TOKEN }}
     strategy:
       matrix:
         image:
@@ -322,8 +322,8 @@ jobs:
       platform: aarch64
       image: ${{ matrix.image }}
     secrets:
-      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
-      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME || secrets.REGISTRY_USERNAME }}
+      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN || secrets.REGISTRY_ROBOT_TOKEN }}
     strategy:
       matrix:
         image: [docker-stacks-foundation, base-notebook]
@@ -336,8 +336,8 @@ jobs:
       platform: x86_64
       image: ${{ matrix.image }}
     secrets:
-      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
-      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME || secrets.REGISTRY_USERNAME }}
+      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN || secrets.REGISTRY_ROBOT_TOKEN }}
     strategy:
       matrix:
         image:
@@ -376,8 +376,8 @@ jobs:
       platform: x86_64
       image: ${{ matrix.image }}
     secrets:
-      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
-      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME || secrets.REGISTRY_USERNAME }}
+      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN || secrets.REGISTRY_ROBOT_TOKEN }}
     strategy:
       matrix:
         image: [docker-stacks-foundation, base-notebook]
@@ -389,8 +389,8 @@ jobs:
     with:
       image: ${{ matrix.image }}
     secrets:
-      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
-      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME || secrets.REGISTRY_USERNAME }}
+      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN || secrets.REGISTRY_ROBOT_TOKEN }}
     strategy:
       matrix:
         image:
@@ -415,8 +415,8 @@ jobs:
     with:
       image: ${{ matrix.image }}
     secrets:
-      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
-      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME || secrets.REGISTRY_USERNAME }}
+      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN || secrets.REGISTRY_ROBOT_TOKEN }}
     strategy:
       matrix:
         image: [docker-stacks-foundation, base-notebook]
