@@ -23,6 +23,10 @@ on:
         description: GitHub Actions Runner image
         required: true
         type: string
+      build-args:
+        description: Docker build args
+        required: false
+        type: string
 
 jobs:
   build-test-upload:
@@ -60,9 +64,13 @@ jobs:
 
       - name: Build image 🛠
         run: |
+          for build_arg in $(echo ${{ inputs.build-args }} | tr ',' ' ')
+          do
+            BUILD_ARGS+="--build-arg $build_arg "
+          done
           #--label "org.opencontainers.image.source=${{ github.repositoryUrl }}"
           docker build --rm --force-rm --tag ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} images/${{ inputs.image }}/ \
-            --build-arg REGISTRY=${{ env.REGISTRY }} --build-arg OWNER=${{ env.OWNER }} \
+            --build-arg REGISTRY=${{ env.REGISTRY }} --build-arg OWNER=${{ env.OWNER }} $BUILD_ARGS \
             --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
             --label "org.opencontainers.image.description=${{ inputs.image }}" 
         env:

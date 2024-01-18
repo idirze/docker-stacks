@@ -33,7 +33,7 @@ on:
       - "requirements-dev.txt"
   push:
     branches:
-      - main
+      - feature/improvments
     paths:
       - ".github/workflows/docker.yml"
       - ".github/workflows/docker-build-test-upload.yml"
@@ -76,7 +76,13 @@ jobs:
       image: docker-stacks-foundation
       platform: x86_64
       runs-on: ubuntu-latest
-
+      build-args: ${{ matrix.build-args }}
+    strategy:
+      matrix:
+        build-args:
+          # Ex.: ["PYTHON_VERSION=3.9, arg1=value1,arg2=value2", "PYTHON_VERSION=3.10", "PYTHON_VERSION=3.11"]
+          ["PYTHON_VERSION=3.9"]
+          
   aarch64-base:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:

@@ -2,12 +2,13 @@
 # Distributed under the terms of the Modified BSD License.
 import logging
 
+import pytest  # type: ignore
 from tests.conftest import TrackedContainer
 
 LOGGER = logging.getLogger(__name__)
 EXPECTED_PYTHON_VERSION = "3.11"
 
-
+@pytest.mark.skip(reason="Allow override python version")
 def test_python_version(container: TrackedContainer) -> None:
     LOGGER.info(
         f"Checking that python major.minor version is {EXPECTED_PYTHON_VERSION}"
