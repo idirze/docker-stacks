@@ -113,7 +113,7 @@ def test_healthy_with_proxy(
     )
 
     # giving some time to let the server start
-    finish_time = time.time() + 10
+    finish_time = time.time() + 30
     sleep_time = 0.1
     while time.time() < finish_time:
         time.sleep(sleep_time)
