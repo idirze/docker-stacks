@@ -27,6 +27,8 @@ from tagging.taggers import (
     TaggerInterface,
     TensorflowVersionTagger,
     UbuntuVersionTagger,
+    ScalaVersionTagger,
+    LongTagger,
 )
 
 
@@ -46,6 +48,7 @@ ALL_IMAGES = {
             UbuntuVersionTagger(),
             PythonMajorMinorVersionTagger(),
             PythonVersionTagger(),
+            LongTagger(PythonVersionTagger(), DateTagger()),
         ],
         manifests=[CondaEnvironmentManifest(), AptPackagesManifest()],
     ),
@@ -55,39 +58,75 @@ ALL_IMAGES = {
             JupyterNotebookVersionTagger(),
             JupyterLabVersionTagger(),
             JupyterHubVersionTagger(),
+            LongTagger(PythonVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger()),
+            LongTagger(PythonVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger(), DateTagger()),
         ],
     ),
     "minimal-notebook": ImageDescription(parent_image="base-notebook"),
     "scipy-notebook": ImageDescription(parent_image="minimal-notebook"),
     "r-notebook": ImageDescription(
         parent_image="minimal-notebook",
-        taggers=[RVersionTagger()],
+        taggers=[
+            RVersionTagger(),
+            LongTagger(PythonVersionTagger(), RVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger()),
+            LongTagger(PythonVersionTagger(), RVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger(), DateTagger()),
+        ],
         manifests=[RPackagesManifest()],
     ),
     "julia-notebook": ImageDescription(
         parent_image="minimal-notebook",
-        taggers=[JuliaVersionTagger()],
+        taggers=[
+            JuliaVersionTagger(),
+            LongTagger(PythonVersionTagger(), JuliaVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger()),
+            LongTagger(PythonVersionTagger(), JuliaVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger(), DateTagger()),
+        ],
         manifests=[JuliaPackagesManifest()],
     ),
     "tensorflow-notebook": ImageDescription(
-        parent_image="scipy-notebook", taggers=[TensorflowVersionTagger()]
+        parent_image="scipy-notebook", 
+        taggers=[
+            TensorflowVersionTagger(),
+            LongTagger(PythonVersionTagger(), TensorflowVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger()),
+            LongTagger(PythonVersionTagger(), TensorflowVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger(), DateTagger()),
+        ]
     ),
     "pytorch-notebook": ImageDescription(
-        parent_image="scipy-notebook", taggers=[PytorchVersionTagger()]
+        parent_image="scipy-notebook", 
+        taggers=[
+            PytorchVersionTagger(),
+            LongTagger(PythonVersionTagger(), PytorchVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger()),
+            LongTagger(PythonVersionTagger(), PytorchVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger(), DateTagger()),
+        ]
     ),
     "datascience-notebook": ImageDescription(
         parent_image="scipy-notebook",
-        taggers=[RVersionTagger(), JuliaVersionTagger()],
+        taggers=[
+            RVersionTagger(), 
+            JuliaVersionTagger(),
+            LongTagger(PythonVersionTagger(), RVersionTagger(), JuliaVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger()),
+            LongTagger(PythonVersionTagger(), RVersionTagger(), JuliaVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger(), DateTagger()),
+        ],
         manifests=[RPackagesManifest(), JuliaPackagesManifest()],
     ),
     "pyspark-notebook": ImageDescription(
         parent_image="scipy-notebook",
-        taggers=[SparkVersionTagger(), JavaVersionTagger()],
+        taggers=[
+            SparkVersionTagger(), 
+            JavaVersionTagger(),
+            ScalaVersionTagger(),
+            LongTagger(SparkVersionTagger(), PythonVersionTagger(), JavaVersionTagger(), ScalaVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger()),
+            LongTagger(SparkVersionTagger(), PythonVersionTagger(), JavaVersionTagger(), ScalaVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger(), DateTagger()),
+        ],
         manifests=[SparkInfoManifest()],
     ),
     "all-spark-notebook": ImageDescription(
         parent_image="pyspark-notebook",
-        taggers=[RVersionTagger()],
+        taggers=[
+            RVersionTagger(),
+            ScalaVersionTagger(),
+            LongTagger(SparkVersionTagger(), PythonVersionTagger(), RVersionTagger(), JavaVersionTagger(), ScalaVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger()),
+            LongTagger(SparkVersionTagger(), PythonVersionTagger(), RVersionTagger(), JavaVersionTagger(), ScalaVersionTagger(), JupyterHubVersionTagger(), JupyterLabVersionTagger(), DateTagger()),
+        ],
         manifests=[RPackagesManifest()],
     ),
 }

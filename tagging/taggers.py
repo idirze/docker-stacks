@@ -1,13 +1,14 @@
 # Copyright (c) Jupyter Development Team.
 # Distributed under the terms of the Modified BSD License.
 from datetime import datetime
+from functools import cache
 
 from docker.models.containers import Container
 
 from tagging.docker_runner import DockerRunner
 from tagging.git_helper import GitHelper
 
-
+@cache
 def _get_program_version(container: Container, program: str) -> str:
     return DockerRunner.run_simple_command(container, cmd=f"{program} --version")
 
@@ -123,8 +124,25 @@ class SparkVersionTagger(TaggerInterface):
         assert version_line.startswith(SPARK_VERSION_LINE_PREFIX)
         return "spark-" + version_line.split(" ")[-1]
 
+class ScalaVersionTagger(TaggerInterface):
+    @staticmethod
+    def tag_value(container: Container) -> str:
+        SCALA_VERSION_LINE_PREFIX = "Using Scala version"
+
+        spark_version = _get_program_version(container, "spark-submit")
+        scala_version_line = spark_version.split("\n")[7]
+        assert scala_version_line.startswith(SCALA_VERSION_LINE_PREFIX), f"Scala version line '{scala_version_line}' does not starts with '{SCALA_VERSION_LINE_PREFIX}'"
+        return "scala-" + scala_version_line.split(" ")[3].split(",")[0]
 
 class JavaVersionTagger(TaggerInterface):
     @staticmethod
     def tag_value(container: Container) -> str:
         return "java-" + _get_program_version(container, "java").split()[1]
+
+class LongTagger(TaggerInterface):
+    """ Long form tagger which combines all versions in a single tag """
+    def __init__(self, *taggers: TaggerInterface):
+       self.taggers = taggers
+    
+    def tag_value(self, container: Container) -> str:
+        return "-".join((lambda taggers : (t.tag_value(container) for t in taggers))(self.taggers))
