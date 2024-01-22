@@ -1,9 +1,9 @@
 name: Download a Docker image and its tags from GitHub artifacts, apply them, and push the image to the Registry
 
 env:
-  REGISTRY: quay.io
+  REGISTRY: ghcr.io
   OWNER: ${{ github.repository_owner }}
-  PUSH_TO_REGISTRY: ${{ (github.repository_owner == 'jupyter' || github.repository_owner == 'mathbunnyru') && (github.ref == 'refs/heads/main' || github.event_name == 'schedule') }}
+  PUSH_TO_REGISTRY: ${{ (github.repository_owner == 'idirze') && (github.ref == 'refs/heads/feature/improvments' || github.event_name == 'schedule') }}
 
 on:
   workflow_call:

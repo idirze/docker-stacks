@@ -414,7 +414,7 @@ jobs:
             all-spark-notebook,
           ]
     needs: [aarch64-images-tag-push, x86_64-images-tag-push]
-    if: github.repository_owner == 'jupyter' && !contains(github.event.pull_request.title, '[FAST_BUILD]')
+    if: github.repository_owner == 'idirze' && !contains(github.event.pull_request.title, '[FAST_BUILD]')
 
   merge-tags-fast:
     uses: ./.github/workflows/docker-merge-tags.yml
@@ -432,7 +432,7 @@ jobs:
   wiki-update:
     uses: ./.github/workflows/docker-wiki-update.yml
     needs: [aarch64-images-tag-push, x86_64-images-tag-push]
-    if: github.repository_owner == 'jupyter' && !contains(github.event.pull_request.title, '[FAST_BUILD]')
+    if: github.repository_owner == 'idirze' && !contains(github.event.pull_request.title, '[FAST_BUILD]')
     permissions:
       contents: write
 
