@@ -38,7 +38,7 @@ jobs:
         if: inputs.platform == 'aarch64'
       - name: Set up platform
         run: |
-          echo "export DOCKER_DEFAULT_PLATFORM=linux/arm64" >> $GITHUB_ENV
+          export DOCKER_DEFAULT_PLATFORM=linux/arm64
         if: inputs.platform == 'aarch64'
       # Self-hosted runners share a state (whole VM) between runs
       # Also, they might have running or stopped containers,
