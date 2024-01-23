@@ -36,9 +36,10 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         if: inputs.platform == 'aarch64'
-      - name: Set up platform
-        run: |
-          export DOCKER_DEFAULT_PLATFORM=linux/arm64
+      - name: set environment variables
+        uses: allenevans/set-env@v3.0.0
+        with:
+          DOCKER_DEFAULT_PLATFORM: linux/arm64
         if: inputs.platform == 'aarch64'
       # Self-hosted runners share a state (whole VM) between runs
       # Also, they might have running or stopped containers,
@@ -66,7 +67,7 @@ jobs:
 
       - name: Build image 🛠
         run: |
-          export DOCKER_DEFAULT_PLATFORM=linux/arm64
+          echo "=============> $DOCKER_DEFAULT_PLATFORM"
           #--label "org.opencontainers.image.source=${{ github.repositoryUrl }}"
           docker build --rm --force-rm --tag ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} images/${{ inputs.image }}/ \
             --build-arg REGISTRY=${{ env.REGISTRY }} --build-arg OWNER=${{ env.OWNER }} \
