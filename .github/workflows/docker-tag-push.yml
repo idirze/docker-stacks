@@ -3,7 +3,7 @@ name: Download a Docker image and its tags from GitHub artifacts, apply them, an
 env:
   REGISTRY: ${{ vars.REGISTRY || 'quay.io' }}
   OWNER: ${{ github.repository_owner }}
-  PUSH_TO_REGISTRY: ${{ (github.repository_owner == 'jupyter' || github.repository_owner == 'mathbunnyru') && (github.ref == 'refs/heads/main' || github.event_name == 'schedule') }}
+  PUSH_TO_REGISTRY: ${{ (github.repository_owner == 'jupyter' || github.repository_owner == 'mathbunnyru' || vars.PUSH_TO_REGISTRY == 'true') && (github.ref == 'refs/heads/main' || github.event_name == 'schedule') }}
 
 on:
   workflow_call:
