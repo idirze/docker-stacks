@@ -19,4 +19,4 @@ def test_package_manager(
     container: TrackedContainer, package_manager_command: str
 ) -> None:
     """Test that package managers are installed and run."""
-    run_command(container, package_manager_command)
+    run_command(container, package_manager_command, timeout=30)
