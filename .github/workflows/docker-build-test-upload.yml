@@ -66,6 +66,7 @@ jobs:
 
       - name: Build image 🛠
         run: |
+          export DOCKER_DEFAULT_PLATFORM
           #--label "org.opencontainers.image.source=${{ github.repositoryUrl }}"
           docker build --rm --force-rm --tag ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} images/${{ inputs.image }}/ \
             --build-arg REGISTRY=${{ env.REGISTRY }} --build-arg OWNER=${{ env.OWNER }} \
