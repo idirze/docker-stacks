@@ -33,6 +33,13 @@ jobs:
         uses: actions/checkout@v4
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        if: inputs.platform == 'aarch64'
+      - name: Set up platform
+        run: |
+          echo "DOCKER_DEFAULT_PLATFORM=linux/amd64" >> $GITHUB_ENV
+        if: inputs.platform == 'aarch64'
       # Self-hosted runners share a state (whole VM) between runs
       # Also, they might have running or stopped containers,
       # which are not cleaned up by `docker system prune`
