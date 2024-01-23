@@ -36,7 +36,7 @@ jobs:
       - name: Set up Docker
         run: |
           brew install docker docker-buildx
-          ln -s ~/.docker/run/docker.sock /var/run/docker.sock
+          sudo ln -s ~/.docker/run/docker.sock /var/run/docker.sock
         if: inputs.platform == 'aarch64'
       # Self-hosted runners share a state (whole VM) between runs
       # Also, they might have running or stopped containers,
