@@ -35,8 +35,8 @@ jobs:
         uses: ./.github/actions/create-dev-env
       - name: Set up Docker
         run: |
-          brew install docker docker-buildx
-          sudo ln -s ~/.docker/run/docker.sock /var/run/docker.sock
+          softwareupdate --install-rosetta --agree-to-license
+          brew install --cask docker
         if: inputs.platform == 'aarch64'
       # Self-hosted runners share a state (whole VM) between runs
       # Also, they might have running or stopped containers,
