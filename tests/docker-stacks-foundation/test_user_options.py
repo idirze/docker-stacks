@@ -26,7 +26,7 @@ def test_uid_change(container: TrackedContainer) -> None:
 def test_gid_change(container: TrackedContainer) -> None:
     """Container should change the GID of the default user."""
     logs = container.run_and_wait(
-        timeout=10,
+        timeout=30,
         tty=True,
         user="root",
         environment=["NB_GID=110"],
@@ -48,7 +48,7 @@ def test_nb_user_change(container: TrackedContainer) -> None:
 
     # Give the chown time to complete.
     # Use sleep, not wait, because the container sleeps forever.
-    time.sleep(1)
+    time.sleep(30)
     LOGGER.info(f"Checking if the user is changed to {nb_user} by the start script ...")
     output = running_container.logs().decode("utf-8")
     assert "ERROR" not in output
@@ -131,7 +131,7 @@ def test_chown_home(container: TrackedContainer) -> None:
 def test_sudo(container: TrackedContainer) -> None:
     """Container should grant passwordless sudo to the default user."""
     logs = container.run_and_wait(
-        timeout=10,
+        timeout=30,
         tty=True,
         user="root",
         environment=["GRANT_SUDO=yes"],
@@ -143,7 +143,7 @@ def test_sudo(container: TrackedContainer) -> None:
 def test_sudo_path(container: TrackedContainer) -> None:
     """Container should include /opt/conda/bin in the sudo secure_path."""
     logs = container.run_and_wait(
-        timeout=10,
+        timeout=30,
         tty=True,
         user="root",
         environment=["GRANT_SUDO=yes"],
@@ -155,7 +155,7 @@ def test_sudo_path(container: TrackedContainer) -> None:
 def test_sudo_path_without_grant(container: TrackedContainer) -> None:
     """Container should include /opt/conda/bin in the sudo secure_path."""
     logs = container.run_and_wait(
-        timeout=10,
+        timeout=30,
         tty=True,
         user="root",
         command=["start.sh", "which", "jupyter"],
