@@ -33,7 +33,7 @@ on:
       - "requirements-dev.txt"
   push:
     branches:
-      - feature/add_ghcr_registry
+      - feature/qemu
     paths:
       - ".github/workflows/docker.yml"
       - ".github/workflows/docker-build-test-upload.yml"
